@@ -3,371 +3,446 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Ujian Online</title>
-    <!-- Menggunakan Font Google Poppins untuk tampilan modern -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Ujian Online: Mtk & B.Indo - Premium Access</title>
     <style>
         :root {
-            --primary-color: #6C63FF;
-            --secondary-color: #4CAF50;
-            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --accent-color: #ffd700;
+            --text-dark: #333;
+            --text-light: #fff;
             --glass-bg: rgba(255, 255, 255, 0.95);
-            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            --error-color: #ff4b4b;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-gradient);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            color: var(--text-dark);
         }
 
         .container {
             background: var(--glass-bg);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
             width: 100%;
-            max-width: 500px;
-            text-align: center;
-            transition: transform 0.3s ease;
-            position: relative;
+            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
         }
 
-        h2 {
-            color: #333;
-            margin-bottom: 10px;
-            font-weight: 600;
+        /* Header Styles */
+        .header {
+            background: rgba(255,255,255,0.8);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
         }
 
-        p.subtitle {
+        .header h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .header p {
             color: #666;
-            font-size: 14px;
-            margin-bottom: 30px;
+            font-size: 0.9rem;
         }
 
+        /* Sections */
+        .section {
+            padding: 30px;
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Input Styles */
         .input-group {
             margin-bottom: 20px;
-            text-align: left;
+            text-align: center;
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        input[type="text"], input[type="password"] {
+        input[type="text"], input[type="password"], textarea {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e1e1e1;
+            padding: 15px;
+            border: 2px solid #ddd;
             border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s ease;
+            font-size: 1rem;
+            transition: border-color 0.3s;
             outline: none;
-            font-family: 'Poppins', sans-serif;
+            margin-bottom: 10px;
         }
 
-        input[type="text"]:focus, input[type="password"]:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 8px rgba(108, 99, 255, 0.2);
+        textarea {
+            height: 100px;
+            resize: vertical;
+            font-family: inherit;
         }
 
-        button {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary-color);
+        input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+            border-color: var(--secondary-color);
+        }
+
+        .btn {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
             color: white;
             border: none;
-            border-radius: 10px;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
             margin-top: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        button:hover {
-            background: #5a52d5;
+        .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
         }
 
-        button:active {
-            transform: translateY(0);
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .hidden {
-            display: none;
-        }
-
-        /* Styles untuk Halaman Soal */
-        .question-item {
-            margin-bottom: 25px;
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 10px;
+        /* Quiz Styles */
+        .question-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--secondary-color);
             text-align: left;
-            border-left: 4px solid var(--primary-color);
         }
 
-        .question-item p {
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: white;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        .badge-mtk { background-color: #e74c3c; }
+        .badge-indo { background-color: #3498db; }
+        .badge-essay { background-color: #f39c12; }
+
+        .question-text {
             font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: inline;
         }
 
         .options label {
             display: block;
-            padding: 8px 12px;
+            padding: 10px;
             margin: 5px 0;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+            background: #f8f9fa;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
-            font-weight: normal;
+            transition: background 0.2s;
         }
 
         .options label:hover {
-            background: #f0f0ff;
-            border-color: var(--primary-color);
+            background: #e9ecef;
         }
 
         .options input[type="radio"] {
             margin-right: 10px;
         }
 
-        #error-msg {
-            color: #ff4757;
-            font-size: 14px;
-            margin-top: 15px;
-            font-weight: 500;
-            min-height: 20px;
+        /* Result Styles */
+        .result-box {
+            text-align: center;
         }
 
         .score-display {
-            font-size: 48px;
+            font-size: 3.5rem;
             font-weight: bold;
             color: var(--primary-color);
             margin: 20px 0;
-            animation: popIn 0.5s ease;
         }
 
-        @keyframes popIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .btn-wa {
+        .whatsapp-btn {
             background: #25D366;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
-        .btn-wa:hover {
-            background: #1ebc57;
+
+        .whatsapp-btn:hover {
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+        }
+
+        /* Error Message */
+        .error-msg {
+            color: var(--error-color);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: none;
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Responsive */
-        @media (max-width: 480px) {
-            .container {
-                padding: 25px;
-            }
-            h2 { font-size: 24px; }
+        @media (max-width: 600px) {
+            .section { padding: 20px; }
+            .header h1 { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
 
+<div class="container">
+    <div class="header">
+        <h1>Portal Ujian Digital</h1>
+        <p>Matematika & Bahasa Indonesia</p>
+    </div>
+
     <!-- HALAMAN LOGIN -->
-    <div class="container" id="login-page">
-        <div style="margin-bottom: 20px;">
-            <!-- Ikon Gembok Sederhana dengan CSS/SVG -->
-            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#6C63FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-        </div>
-        <h2>Selamat Datang</h2>
-        <p class="subtitle">Silakan masukkan kode akses untuk memulai ujian.</p>
-        
+    <div id="login-section" class="section active">
         <div class="input-group">
-            <label for="access-code">Kode Akses</label>
-            <input type="password" id="access-code" placeholder="Masukkan kode di sini..." onkeypress="handleEnter(event)">
+            <label for="access-code" style="display:block; margin-bottom:10px; font-weight:bold;">Masukkan Kode Akses</label>
+            <input type="password" id="access-code" placeholder="Contoh: Mtk_B.indo">
+            <p id="login-error" class="error-msg">Kode akses salah! Silakan coba lagi.</p>
         </div>
-        
-        <button onclick="checkCode()">Masuk Ujian</button>
-        <p id="error-msg"></p>
+        <button class="btn" onclick="checkLogin()">Buka Ujian</button>
     </div>
 
     <!-- HALAMAN SOAL -->
-    <div class="container hidden" id="exam-page">
-        <h2>Lembar Ujian</h2>
-        <p class="subtitle">Jawablah dengan teliti. Waktu tidak dibatasi.</p>
-        <form id="exam-form">
-            <div id="questions-container" style="max-height: 60vh; overflow-y: auto; padding-right: 5px;">
-                <!-- Soal akan di-generate oleh JavaScript -->
-            </div>
-            <button type="button" onclick="finishExam()" style="background: var(--secondary-color); margin-top: 20px;">Selesai & Lihat Nilai</button>
+    <div id="quiz-section" class="section">
+        <div class="input-group">
+            <input type="text" id="student-name" placeholder="Nama Lengkap Siswa" required>
+        </div>
+        
+        <form id="quiz-form">
+            <!-- Soal akan digenerate oleh JavaScript -->
+            <div id="questions-container" style="max-height: 60vh; overflow-y: auto; padding-right: 5px;"></div>
+            
+            <button type="button" class="btn" onclick="submitQuiz()" style="background: linear-gradient(to right, #11998e, #38ef7d);">Selesai & Kirim Jawaban</button>
         </form>
     </div>
 
     <!-- HALAMAN HASIL -->
-    <div class="container hidden" id="result-page">
-        <h2>Ujian Selesai!</h2>
-        <div id="result-area">
-            <p>Berikut adalah nilai Anda:</p>
+    <div id="result-section" class="section">
+        <div class="result-box">
+            <h2>Hasil Ujian Anda</h2>
+            <p style="color:#666;">Nilai Pilihan Ganda:</p>
             <div class="score-display" id="final-score">0</div>
-            <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Klik tombol di bawah untuk melaporkan nilai ke Guru.</p>
-            <button class="btn-wa" onclick="sendToWA()">
-                <span style="margin-right: 8px;">📱</span> Kirim ke WhatsApp Guru
+            
+            <div style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin-bottom: 20px; font-size: 0.9rem;">
+                <strong>Catatan:</strong> Jawaban Uraian Anda telah dikirim bersama nilai ini untuk diperiksa guru.
+            </div>
+
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Klik tombol di bawah untuk mengirim laporan ke Guru via WhatsApp.</p>
+            
+            <button class="btn whatsapp-btn" onclick="sendToWhatsApp()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.592 2.654-.696c1.029.575 2.27.879 3.805.879 3.18 0 5.767-2.587 5.767-5.766.001-3.187-2.575-5.762-5.766-5.762zm9.969 5.766c0 5.504-4.465 9.97-9.969 9.97C9.35 21.908 6.72 20.66 4.93 18.38L0 24l1.62-4.81C.57 17.51 0 15.32 0 12.938 0 7.434 4.465 2.969 9.969 2.969c5.504 0 9.969 4.465 9.969 9.969z"/></svg>
+                Kirim Nilai ke Guru
             </button>
-            <button onclick="location.reload()" style="background: #999; margin-top: 10px;">Keluar / Ulangi</button>
+            <button class="btn" style="background:#666; margin-top:10px;" onclick="location.reload()">Ulangi Ujian</button>
         </div>
     </div>
+</div>
 
-    <script>
-        // KONFIGURASI
-        const CORRECT_CODE = "Mtk_B.indo";
-        const TEACHER_NUMBER = "6285882382854"; // Format internasional
+<script>
+    // --- DATA SOAL (20 PG + 5 Uraian) ---
+    const questions = [
+        // --- MATEMATIKA (PG) ---
+        { type: 'pg', subject: 'mtk', q: "1. Hasil dari 25 x 4 + 10 adalah...", options: ["100", "110", "120", "90"], answer: 1 },
+        { type: 'pg', subject: 'mtk', q: "2. Bangun datar dengan 4 sisi sama panjang disebut...", options: ["Persegi Panjang", "Layang-layang", "Persegi", "Belah Ketupat"], answer: 2 },
+        { type: 'pg', subject: 'mtk', q: "3. FPB dari 12 dan 18 adalah...", options: ["3", "6", "9", "12"], answer: 1 },
+        { type: 'pg', subject: 'mtk', q: "4. 3/4 diubah menjadi desimal menjadi...", options: ["0.25", "0.5", "0.75", "0.8"], answer: 2 },
+        { type: 'pg', subject: 'mtk', q: "5. Keliling persegi dengan sisi 8 cm adalah...", options: ["16 cm", "32 cm", "64 cm", "24 cm"], answer: 1 },
+        { type: 'pg', subject: 'mtk', q: "6. Hasil dari 150 - 75 : 3 adalah...", options: ["25", "125", "100", "135"], answer: 1 },
+        { type: 'pg', subject: 'mtk', q: "7. Sudut yang besarnya kurang dari 90 derajat disebut...", options: ["Sudut Tumpul", "Sudut Siku-siku", "Sudut Lancip", "Sudut Lurus"], answer: 2 },
+        { type: 'pg', subject: 'mtk', q: "8. Volume kubus dengan rusuk 5 cm adalah...", options: ["25 cm³", "100 cm³", "125 cm³", "150 cm³"], answer: 2 },
+        { type: 'pg', subject: 'mtk', q: "9. Pecahan senilai dengan 1/2 adalah...", options: ["2/5", "3/6", "4/9", "5/12"], answer: 1 },
+        { type: 'pg', subject: 'mtk', q: "10. Rata-rata dari data 5, 7, 9 adalah...", options: ["6", "7", "8", "9"], answer: 1 },
 
-        // DATA SOAL (15 Soal: 8 Mtk, 7 B.Indo)
-        const questions = [
-            // MATEMATIKA
-            { q: "1. Hasil dari 15 + 25 adalah...", options: ["30", "40", "50", "60"], answer: 1 },
-            { q: "2. Berapakah hasil dari 12 x 11?", options: ["121", "132", "144", "110"], answer: 1 },
-            { q: "3. Akar pangkat dua dari 144 adalah...", options: ["10", "11", "12", "14"], answer: 2 },
-            { q: "4. Jika x = 5, maka nilai 2x + 3 adalah...", options: ["10", "13", "15", "20"], answer: 1 },
-            { q: "5. Bangun datar yang memiliki 3 sisi disebut...", options: ["Persegi", "Lingkaran", "Segitiga", "Trapesium"], answer: 2 },
-            { q: "6. Hasil dari 100 : 4 adalah...", options: ["20", "25", "30", "35"], answer: 1 },
-            { q: "7. Sudut siku-siku besarnya berapa derajat?", options: ["45°", "90°", "180°", "360°"], answer: 1 },
-            { q: "8. Rumus luas persegi panjang adalah...", options: ["s x s", "p x l", "a x t / 2", "2 x (p + l)"], answer: 1 },
+        // --- BAHASA INDONESIA (PG) ---
+        { type: 'pg', subject: 'indo', q: "11. Antonim dari kata 'Gagal' adalah...", options: ["Kalah", "Sukses", "Hancur", "Berhenti"], answer: 1 },
+        { type: 'pg', subject: 'indo', q: "12. Sinonim dari kata 'Efektif' adalah...", options: ["Tepat guna", "Cepat", "Lama", "Mahal"], answer: 0 },
+        { type: 'pg', subject: 'indo', q: "13. Kalimat yang mengandung perintah diakhiri tanda...", options: ["Titik (.)", "Tanya (?)", "Seru (!)", "Koma (,)"], answer: 2 },
+        { type: 'pg', subject: 'indo', q: "14. Kata baku dari 'Nasehat' adalah...", options: ["Nasihat", "Nasehat", "Nasihath", "Nasihaat"], answer: 0 },
+        { type: 'pg', subject: 'indo', q: "15. Tempat terjadinya peristiwa dalam cerita disebut...", options: ["Tema", "Alur", "Latar", "Amanat"], answer: 2 },
+        { type: 'pg', subject: 'indo', q: "16. Pantun bersajak...", options: ["a-a-a-a", "a-b-a-b", "a-b-b-a", "b-b-b-b"], answer: 1 },
+        { type: 'pg', subject: 'indo', q: "17. Imbuhan 'ber-' pada kata 'ajar' menjadi...", options: ["Berajar", "Belajar", "Beraajar", "Beajar"], answer: 1 },
+        { type: 'pg', subject: 'indo', q: "18. Tokoh utama yang bersifat jahat disebut...", options: ["Protagonis", "Antagonis", "Tritagonis", "Figuran"], answer: 1 },
+        { type: 'pg', subject: 'indo', q: "19. Gagasan pokok dalam sebuah paragraf disebut...", options: ["Kalimat penjelas", "Ide pokok", "Kesimpulan", "Tema"], answer: 1 },
+        { type: 'pg', subject: 'indo', q: "20. Ungkapan 'Kabar angin' berarti...", options: ["Berita bohong", "Berita belum jelas kebenarannya", "Berita penting", "Berita duka"], answer: 1 },
 
-            // BAHASA INDONESIA
-            { q: "9. Lawan kata (antonim) dari 'Panjang' adalah...", options: ["Tinggi", "Luas", "Pendek", "Kecil"], answer: 2 },
-            { q: "10. Persamaan kata (sinonim) dari 'Cantik' adalah...", options: ["Jelek", "Indah", "Buruk", "Kasar"], answer: 1 },
-            { q: "11. Ibu kota negara Indonesia saat ini adalah...", options: ["Bandung", "Surabaya", "Jakarta", "Medan"], answer: 2 },
-            { q: "12. Kata baku dari 'Apotik' adalah...", options: ["Apotek", "Apotik", "Aphotic", "Apoteker"], answer: 0 },
-            { q: "13. Cerita rakyat 'Malin Kundang' berasal dari daerah...", options: ["Jawa Barat", "Sumatera Barat", "Bali", "Papua"], answer: 1 },
-            { q: "14. Imbuhan 'me-' pada kata 'tulis' menjadi...", options: ["Metulis", "Menulis", "Mengtulis", "Menyulis"], answer: 1 },
-            { q: "15. Tanda baca yang digunakan untuk mengakhiri kalimat tanya adalah...", options: ["Titik (.)", "Koma (,)", "Seru (!)", "Tanya (?)"], answer: 3 }
-        ];
+        // --- URAIAN / ESSAY (5 Soal) ---
+        { type: 'essay', subject: 'mtk', q: "21. (Matematika) Sebuah taman berbentuk persegi panjang dengan panjang 20 meter dan lebar 10 meter. Hitunglah luas dan keliling taman tersebut!" },
+        { type: 'essay', subject: 'mtk', q: "22. (Matematika) Ibu membeli 5 kg gula. Digunakan untuk membuat kue 2,5 kg. Berapa gram sisa gula ibu sekarang?" },
+        { type: 'essay', subject: 'indo', q: "23. (B.Indo) Buatlah sebuah kalimat efektif menggunakan kata 'Perpustakaan'!" },
+        { type: 'essay', subject: 'indo', q: "24. (B.Indo) Jelaskan perbedaan antara 'Pantun' dan 'Syair' secara singkat!" },
+        { type: 'essay', subject: 'indo', q: "25. (B.Indo) Apa amanat yang bisa diambil dari cerita 'Kancil dan Buaya'? Jelaskan pendapatmu!" }
+    ];
 
-        let userScore = 0;
+    // --- LOGIKA PROGRAM ---
+    const correctCode = "Mtk_B.indo";
+    let finalScore = 0;
+    let studentName = "";
+    let essayAnswers = [];
 
-        // FUNGSI LOGIN
-        function checkCode() {
-            const input = document.getElementById('access-code').value;
-            const errorMsg = document.getElementById('error-msg');
-            const btn = document.querySelector('#login-page button');
+    function checkLogin() {
+        const inputCode = document.getElementById('access-code').value;
+        const errorMsg = document.getElementById('login-error');
+        const btn = document.querySelector('#login-section .btn');
 
-            if (input === CORRECT_CODE) {
-                // Animasi transisi sederhana
-                document.getElementById('login-page').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('login-page').classList.add('hidden');
-                    document.getElementById('exam-page').classList.remove('hidden');
-                    loadQuestions();
-                }, 300);
-            } else {
-                errorMsg.innerText = "⚠️ Kode Akses Salah! Silakan coba lagi.";
-                document.getElementById('access-code').style.borderColor = "#ff4757";
-                // Efek getar jika salah
-                const container = document.getElementById('login-page');
-                container.style.transform = "translateX(10px)";
-                setTimeout(() => container.style.transform = "translateX(-10px)", 100);
-                setTimeout(() => container.style.transform = "translateX(0)", 200);
-            }
+        if (inputCode === correctCode) {
+            // Login Berhasil
+            document.getElementById('login-section').classList.remove('active');
+            document.getElementById('quiz-section').classList.add('active');
+            renderQuestions();
+        } else {
+            // Login Gagal
+            errorMsg.style.display = 'block';
+            btn.disabled = true;
+            btn.innerText = "Tunggu 3 detik...";
+            
+            setTimeout(() => {
+                errorMsg.style.display = 'none';
+                btn.disabled = false;
+                btn.innerText = "Buka Ujian";
+                document.getElementById('access-code').value = "";
+            }, 3000);
         }
+    }
 
-        // Agar bisa tekan Enter untuk login
-        function handleEnter(e) {
-            if(e.key === 'Enter'){
-                checkCode();
-            }
-        }
+    function renderQuestions() {
+        const container = document.getElementById('questions-container');
+        let htmlContent = '';
 
-        // FUNGSI MEMUAT SOAL
-        function loadQuestions() {
-            const container = document.getElementById('questions-container');
-            questions.forEach((q, index) => {
-                const div = document.createElement('div');
-                div.className = 'question-item';
-                
-                let optionsHtml = '';
-                q.options.forEach((opt, optIndex) => {
-                    optionsHtml += `
+        questions.forEach((q, index) => {
+            // Badge Logic
+            let badgeClass = q.subject === 'mtk' ? 'badge-mtk' : 'badge-indo';
+            let badgeText = q.subject === 'mtk' ? 'MTK' : 'B.INDO';
+            if(q.type === 'essay') badgeClass = 'badge-essay';
+
+            htmlContent += `
+                <div class="question-card">
+                    <div class="question-text"><span class="badge ${badgeClass}">${badgeText}</span> ${q.q}</div>
+            `;
+
+            if (q.type === 'pg') {
+                htmlContent += `<div class="options">`;
+                q.options.forEach((opt, i) => {
+                    htmlContent += `
                         <label>
-                            <input type="radio" name="q${index}" value="${optIndex}"> ${opt}
+                            <input type="radio" name="q${index}" value="${i}">
+                            ${opt}
                         </label>
                     `;
                 });
-
-                div.innerHTML = `
-                    <p>${q.q}</p>
-                    <div class="options">${optionsHtml}</div>
+                htmlContent += `</div>`;
+            } else {
+                htmlContent += `
+                    <div style="margin-top:15px;">
+                        <textarea id="essay-${index}" placeholder="Ketik jawaban uraian Anda di sini..."></textarea>
+                    </div>
                 `;
-                container.appendChild(div);
-            });
+            }
+
+            htmlContent += `</div>`;
+        });
+
+        container.innerHTML = htmlContent;
+    }
+
+    function submitQuiz() {
+        studentName = document.getElementById('student-name').value;
+        if (!studentName) {
+            alert("Harap isi Nama Lengkap terlebih dahulu!");
+            return;
         }
 
-        // FUNGSI SELESAI & HITUNG NILAI
-        function finishExam() {
-            let correctCount = 0;
-            let answered = 0;
+        let score = 0;
+        let answeredCount = 0;
+        essayAnswers = []; // Reset
 
-            questions.forEach((q, index) => {
+        questions.forEach((q, index) => {
+            if (q.type === 'pg') {
                 const selected = document.querySelector(`input[name="q${index}"]:checked`);
                 if (selected) {
-                    answered++;
+                    answeredCount++;
                     if (parseInt(selected.value) === q.answer) {
-                        correctCount++;
+                        score += 1; 
                     }
                 }
-            });
-
-            if (answered < questions.length) {
-                const confirmFinish = confirm(`Anda baru menjawab ${answered} dari ${questions.length} soal. Yakin ingin selesai?`);
-                if (!confirmFinish) return;
-            }
-
-            // Hitung Skor (Skala 100)
-            userScore = Math.round((correctCount / questions.length) * 100);
-
-            // Tampilkan Hasil
-            document.getElementById('exam-page').classList.add('hidden');
-            document.getElementById('result-page').classList.remove('hidden');
-            document.getElementById('final-score').innerText = userScore;
-            
-            // Ubah warna nilai jika bagus atau jelek
-            const scoreEl = document.getElementById('final-score');
-            if(userScore >= 70) {
-                scoreEl.style.color = "#4CAF50"; // Hijau
             } else {
-                scoreEl.style.color = "#ff4757"; // Merah
+                // Simpan jawaban essay
+                const val = document.getElementById(`essay-${index}`).value;
+                essayAnswers.push({ no: index + 1, a: val });
             }
+        });
+
+        // Hitung nilai skala 100 (Hanya berdasarkan PG)
+        const totalPG = questions.filter(q => q.type === 'pg').length;
+        finalScore = Math.round((score / totalPG) * 100);
+
+        // Konfirmasi jika ada PG kosong
+        if (answeredCount < totalPG) {
+            if(!confirm(`Anda baru menjawab ${answeredCount} dari ${totalPG} soal PG. Yakin ingin selesai?`)) return;
         }
 
-        // FUNGSI KIRIM KE WHATSAPP
-        function sendToWA() {
-            const message = `Halo Pak/Bu, saya telah selesai mengerjakan ujian.\n\n*Nama:* (Isi Nama Anda)\n*Nilai:* ${userScore} / 100\n\nTerima kasih.`;
-            const encodedMessage = encodeURIComponent(message);
-            const waLink = `https://wa.me/${TEACHER_NUMBER}?text=${encodedMessage}`;
-            
-            // Membuka WhatsApp
-            window.open(waLink, '_blank');
-        }
-    </script>
+        // Tampilkan Hasil
+        document.getElementById('quiz-section').classList.remove('active');
+        document.getElementById('result-section').classList.add('active');
+        document.getElementById('final-score').innerText = finalScore;
+    }
+
+    function sendToWhatsApp() {
+        const phoneNumber = "6285882382854"; 
+        
+        let message = `*LAPORAN HASIL UJIAN*\n`;
+        message += `--------------------------\n`;
+        message += `*Nama:* ${studentName}\n`;
+        message += `*Nilai PG:* ${finalScore} / 100\n\n`;
+        message += `*JAWABAN URAIAN:*\n`;
+
+        essayAnswers.forEach(item => {
+            let ans = item.a === "" ? "(Tidak dijawab)" : item.a;
+            message += `\n*No ${item.no}:*\n${ans}\n`;
+        });
+
+        message += `\n--------------------------\nTerima kasih.`;
+
+        const encodedMessage = encodeURIComponent(message);
+        const url = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+        window.open(url, '_blank');
+    }
+</script>
+
 </body>
 </html>
