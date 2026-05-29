@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ujian Online Premium: PJOK & Agama</title>
+    <title>Ujian Online: PLBJ & Indonesia</title>
     <!-- Font Awesome untuk Ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -14,7 +14,7 @@
             --gold: #ffd700;
             --gold-dark: #b8860b;
             --dark-bg: #0a0a0a;
-            --glass-bg: rgba(20, 20, 20, 0.90);
+            --glass-bg: rgba(20, 20, 20, 0.95);
             --border-gold: 1px solid rgba(255, 215, 0, 0.3);
         }
 
@@ -33,7 +33,7 @@
 
         .container {
             width: 90%;
-            max-width: 750px;
+            max-width: 800px;
             background: var(--glass-bg);
             backdrop-filter: blur(15px);
             border: var(--border-gold);
@@ -43,6 +43,7 @@
             text-align: center;
             position: relative;
             animation: fadeIn 1s ease-in-out;
+            margin: 20px 0;
         }
 
         @keyframes fadeIn {
@@ -53,7 +54,7 @@
         h1 {
             font-family: 'Cinzel', serif;
             color: var(--gold);
-            font-size: 2.2em;
+            font-size: 2em;
             margin-bottom: 10px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
@@ -63,6 +64,7 @@
             font-weight: 300;
             letter-spacing: 1px;
             font-size: 1.2em;
+            margin-top: 0;
         }
 
         /* Input Styles */
@@ -78,7 +80,7 @@
             display: block;
         }
 
-        input[type="text"], input[type="password"], textarea {
+        input[type="text"], input[type="password"] {
             width: 100%;
             padding: 15px;
             background: rgba(255, 255, 255, 0.05);
@@ -91,12 +93,7 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        textarea {
-            height: 100px;
-            resize: vertical;
-        }
-
-        input:focus, textarea:focus {
+        input:focus {
             border-color: var(--gold);
             outline: none;
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
@@ -161,14 +158,14 @@
             margin-right: 8px;
             vertical-align: middle;
         }
-        .badge-pjok { background-color: #e67e22; color: white; }
-        .badge-agama { background-color: #27ae60; color: white; }
-        .badge-essay { background-color: #f39c12; color: black; }
+        .badge-plbj { background-color: #9b59b6; color: white; }
+        .badge-indo { background-color: #e74c3c; color: white; }
 
         .question-text {
             font-size: 1.1em;
             margin-bottom: 15px;
             color: #fff;
+            font-weight: 600;
         }
 
         .options label {
@@ -181,6 +178,7 @@
             cursor: pointer;
             transition: 0.2s;
             color: #ccc;
+            font-weight: normal;
         }
 
         .options label:hover {
@@ -217,16 +215,6 @@
             display: none;
         }
 
-        .note-essay {
-            font-size: 0.85em;
-            color: #aaa;
-            background: rgba(255, 215, 0, 0.1);
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border: 1px solid var(--gold-dark);
-        }
-
         /* Hide sections initially */
         #quiz-section, #result-section {
             display: none;
@@ -237,6 +225,16 @@
         ::-webkit-scrollbar-track { background: #111; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+        
+        .section-header {
+            background: rgba(255,215,0,0.1);
+            padding: 10px;
+            margin: 20px 0 10px 0;
+            border-radius: 5px;
+            color: var(--gold);
+            font-weight: bold;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -244,13 +242,13 @@
     <div class="container">
         <!-- 1. HALAMAN LOGIN -->
         <div id="login-section">
-            <h1><i class="fas fa-crown"></i> Ujian Akses</h1>
-            <h2>PJOK & Pendidikan Agama</h2>
-            <p style="color: #aaa; font-size: 0.9em;">Masukkan kredensial Anda untuk mengakses soal.</p>
+            <h1><i class="fas fa-unlock-alt"></i> Ujian Online</h1>
+            <h2>PLBJ & Pengetahuan Indonesia</h2>
+            <p style="color: #aaa; font-size: 0.9em;">Masukkan kode akses untuk memulai ujian.</p>
             
             <div class="input-group">
                 <label>Nama Lengkap Siswa</label>
-                <input type="text" id="studentName" placeholder="Contoh: Budi Santoso">
+                <input type="text" id="studentName" placeholder="Contoh: Ahmad Dhani">
             </div>
             
             <div class="input-group">
@@ -258,97 +256,91 @@
                 <input type="password" id="accessCode" placeholder="Masukkan Kode Rahasia">
             </div>
 
-            <button class="btn-premium" onclick="checkLogin()">Buka Soal Ujian</button>
-            <p class="error-msg" id="errorMsg"><i class="fas fa-exclamation-triangle"></i> Kode Akses Salah! Akses Ditolak.</p>
+            <button class="btn-premium" onclick="checkLogin()">Masuk Ujian</button>
+            <p class="error-msg" id="errorMsg"><i class="fas fa-times-circle"></i> Kode Akses Salah! Anda tidak bisa mengerjakan soal.</p>
         </div>
 
         <!-- 2. HALAMAN SOAL -->
         <div id="quiz-section">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px;">
                 <span id="displayStudentName" style="color: var(--gold); font-weight: bold;"></span>
-                <span style="font-size: 0.8em; color: #aaa;">25 PG + 5 Uraian</span>
+                <span style="font-size: 0.8em; color: #aaa;">35 Soal Pilihan Ganda</span>
             </div>
             
-            <div id="questions-container" style="max-height: 60vh; overflow-y: auto; padding-right: 5px;">
+            <div id="questions-container" style="max-height: 65vh; overflow-y: auto; padding-right: 10px;">
                 <!-- Soal akan muncul di sini via JavaScript -->
             </div>
 
             <button class="btn-premium" onclick="finishQuiz()" style="width: 100%; margin-top: 30px;">
-                <i class="fas fa-paper-plane"></i> Selesai & Lihat Nilai
+                <i class="fas fa-paper-plane"></i> Selesai & Kirim Nilai
             </button>
         </div>
 
         <!-- 3. HALAMAN HASIL & KIRIM WA -->
         <div id="result-section">
             <h1>Hasil Ujian</h1>
-            <p>Perolehan nilai Pilihan Ganda Anda:</p>
+            <p>Terima kasih telah mengerjakan soal.</p>
             
             <div class="score-circle" id="finalScore">0</div>
             
-            <div class="note-essay">
-                <i class="fas fa-info-circle"></i> <strong>Perhatian:</strong> Nilai di atas hanya untuk soal Pilihan Ganda. Jawaban Uraian Anda akan dikirimkan ke Guru untuk diperiksa manual.
-            </div>
-
-            <p style="margin-bottom: 30px;">
-                Silakan klik tombol di bawah untuk melaporkan nilai dan jawaban uraian kepada Guru.
+            <p style="margin-bottom: 30px; color: #ccc;">
+                Klik tombol di bawah untuk mengirim laporan nilai secara otomatis kepada Guru.
             </p>
 
             <a id="waLink" href="#" target="_blank" class="btn-premium btn-whatsapp">
-                <i class="fab fa-whatsapp" style="font-size: 1.2em;"></i> Kirim Laporan ke Guru
+                <i class="fab fa-whatsapp" style="font-size: 1.2em;"></i> Kirim Nilai ke Guru
             </a>
-            
-            <p style="font-size: 0.8em; color: #666; margin-top: 20px;">
-                *Jika tombol tidak berfungsi, pastikan Anda memiliki aplikasi WhatsApp.
-            </p>
         </div>
     </div>
 
     <script>
-        // --- KONFIGURASI NOMOR GURU ---
-        const teacherNumber = "6285882382854"; // Format internasional tanpa '+'
+        // --- KONFIGURASI ---
+        const TEACHER_NUMBER = "6285882382854"; // Format internasional tanpa '+'
+        const ACCESS_CODE = "BELAJAR.ID";
 
-        // --- DATABASE SOAL (25 PG + 5 Uraian: PJOK & AGAMA) ---
-        // Type: 'pg' atau 'essay'
-        const questionBank = [
-            // PJOK (15 Soal PG)
-            { type: 'pg', subject: 'pjok', q: "1. Induk organisasi sepak bola dunia adalah...", options: ["FIFA", "PSSI", "NBA", "PBSI"], a: "FIFA" },
-            { type: 'pg', subject: 'pjok', q: "2. Berapa jumlah pemain dalam satu tim sepak bola?", options: ["10", "11", "12", "6"], a: "11" },
-            { type: 'pg', subject: 'pjok', q: "3. Gerakan push-up bertujuan untuk melatih otot...", options: ["Kaki", "Perut", "Lengan & Dada", "Leher"], a: "Lengan & Dada" },
-            { type: 'pg', subject: 'pjok', q: "4. Lari jarak pendek disebut juga...", options: ["Marathon", "Sprint", "Jogging", "Estafet"], a: "Sprint" },
-            { type: 'pg', subject: 'pjok', q: "5. Dalam permainan bola basket, menggiring bola disebut...", options: ["Passing", "Shooting", "Dribbling", "Blocking"], a: "Dribbling" },
-            { type: 'pg', subject: 'pjok', q: "6. Vitamin D sangat baik untuk kesehatan...", options: ["Mata", "Tulang", "Kulit", "Gigi"], a: "Tulang" },
-            { type: 'pg', subject: 'pjok', q: "7. Pemanasan sebelum olahraga bertujuan untuk...", options: ["Membuat lelah", "Mencegah cedera", "Menghabiskan waktu", "Mendinginkan tubuh"], a: "Mencegah cedera" },
-            { type: 'pg', subject: 'pjok', q: "8. Renang gaya bebas menggunakan tumpuan pada...", options: ["Punggung", "Dada", "Perut", "Samping"], a: "Perut" },
-            { type: 'pg', subject: 'pjok', q: "9. Alat pemukul dalam permainan kasti terbuat dari...", options: ["Besi", "Kayu", "Plastik", "Karet"], a: "Kayu" },
-            { type: 'pg', subject: 'pjok', q: "10. Gerakan sit-up melatih kekuatan otot...", options: ["Perut", "Paha", "Betis", "Bahu"], a: "Perut" },
-            { type: 'pg', subject: 'pjok', q: "11. Berapa lama durasi pertandingan sepak bola normal?", options: ["45 menit", "90 menit", "60 menit", "100 menit"], a: "90 menit" },
-            { type: 'pg', subject: 'pjok', q: "12. Teknik dasar passing dalam bola voli adalah...", options: ["Passing atas dan bawah", "Dribble", "Smash", "Block"], a: "Passing atas dan bawah" },
-            { type: 'pg', subject: 'pjok', q: "13. Senam lantai yang menyerupai gerakan guling disebut...", options: ["Handstand", "Roll depan", "Meroda", "Salto"], a: "Roll depan" },
-            { type: 'pg', subject: 'pjok', q: "14. Makanan yang mengandung karbohidrat berfungsi sebagai...", options: ["Sumber energi", "Pengganti sel", "Pelarut vitamin", "Penambah rasa"], a: "Sumber energi" },
-            { type: 'pg', subject: 'pjok', q: "15. Posisi kiper dalam sepak bola bertugas untuk...", options: ["Mencetak gol", "Menjaga gawang", "Mengatur serangan", "Wasit"], a: "Menjaga gawang" },
-            
-            // AGAMA (10 Soal PG)
-            { type: 'pg', subject: 'agama', q: "16. Kitab suci umat Islam adalah...", options: ["Al-Qur'an", "Injil", "Weda", "Tripitaka"], a: "Al-Qur'an" },
-            { type: 'pg', subject: 'agama', q: "17. Rukun Islam ada berapa?", options: ["4", "5", "6", "3"], a: "5" },
-            { type: 'pg', subject: 'agama', q: "18. Hari raya kurban umat Islam disebut...", options: ["Idul Fitri", "Idul Adha", "Nyepi", "Imlek"], a: "Idul Adha" },
-            { type: 'pg', subject: 'agama', q: "19. Nabi terakhir dalam agama Islam adalah...", options: ["Nabi Isa", "Nabi Musa", "Nabi Muhammad SAW", "Nabi Ibrahim"], a: "Nabi Muhammad SAW" },
-            { type: 'pg', subject: 'agama', q: "20. Sembahyang wajib umat Islam sehari semalam ada...", options: ["3 waktu", "4 waktu", "5 waktu", "2 waktu"], a: "5 waktu" },
-            { type: 'pg', subject: 'agama', q: "21. Puasa wajib dilakukan pada bulan...", options: ["Syawal", "Ramadhan", "Muharam", "Rajab"], a: "Ramadhan" },
-            { type: 'pg', subject: 'agama', q: "22. Tempat ibadah umat Kristiani disebut...", options: ["Masjid", "Gereja", "Pura", "Vihara"], a: "Gereja" },
-            { type: 'pg', subject: 'agama', q: "23. Sikap saling menghormati antar umat beragama disebut...", options: ["Fanatik", "Toleransi", "Egois", "Diskriminasi"], a: "Toleransi" },
-            { type: 'pg', subject: 'agama', q: "24. Surat Al-Fatihah dibaca saat...", options: ["Tidur", "Sholat", "Makan", "Mandi"], a: "Sholat" },
-            { type: 'pg', subject: 'agama', q: "25. Ajaran cinta kasih merupakan inti dari agama...", options: ["Semua agama", "Hanya satu agama", "Tidak ada", "Agama suku"], a: "Semua agama" },
+        // --- DATABASE SOAL (25 PLBJ + 10 INDONESIA) ---
+        const questions = [
+            // --- 25 SOAL PLBJ ---
+            { s: 'plbj', q: "1. Rumah adat khas Jakarta (Betawi) disebut...", options: ["Rumah Gadang", "Rumah Joglo", "Rumah Kebaya", "Rumah Panggung"], a: "Rumah Kebaya" },
+            { s: 'plbj', q: "2. Makanan khas Betawi yang terbuat dari tepung beras dan ebi adalah...", options: ["Kerak Telor", "Kue Rangi", "Asinan", "Gado-gado"], a: "Kue Rangi" },
+            { s: 'plbj', q: "3. Seni pertunjukan teater tradisional Betawi adalah...", options: ["Lenong", "Ketoprak", "Ludruk", "Reog"], a: "Lenong" },
+            { s: 'plbj', q: "4. Pakaian adat pria Betawi terdiri dari baju sadariah dan celana...", options: ["Panjang", "Komprang", "Pendek", "Jeans"], a: "Komprang" },
+            { s: 'plbj', q: "5. Alat musik tradisional Betawi yang perpaduan budaya Tionghoa dan pribumi adalah...", options: ["Angklung", "Gambang Kromong", "Calung", "Sasando"], a: "Gambang Kromong" },
+            { s: 'plbj', q: "6. Julukan untuk kota Jakarta adalah...", options: ["Kota Hujan", "The Big Durian", "Kota Bunga", "Kota Pelajar"], a: "The Big Durian" },
+            { s: 'plbj', q: "7. Pelabuhan utama di Jakarta Utara adalah...", options: ["Tanjung Perak", "Tanjung Priok", "Merak", "Bakauheni"], a: "Tanjung Priok" },
+            { s: 'plbj', q: "8. Tari Topeng Betawi biasanya menceritakan tentang...", options: ["Kepahlawanan", "Kehidupan sehari-hari", "Mitos dewa-dewi", "Perang besar"], a: "Kehidupan sehari-hari" },
+            { s: 'plbj', q: "9. Ondel-ondel merupakan kesenian rakyat berupa...", options: ["Boneka kecil", "Wayang kulit", "Boneka besar berkepala raksasa", "Alat musik"], a: "Boneka besar berkepala raksasa" },
+            { s: 'plbj', q: "10. Sungai yang membelah kota Jakarta adalah...", options: ["Sungai Ciliwung", "Sungai Bengawan Solo", "Sungai Musi", "Sungai Code"], a: "Sungai Ciliwung" },
+            { s: 'plbj', q: "11. Suku asli penduduk Jakarta adalah suku...", options: ["Sunda", "Betawi", "Jawa", "Batak"], a: "Betawi" },
+            { s: 'plbj', q: "12. Batik khas Jakarta memiliki motif yang terkenal, yaitu motif...", options: ["Parang", "Mega Mendung", "Ondel-ondel", "Kawung"], a: "Ondel-ondel" },
+            { s: 'plbj', q: "13. Danau buatan di Jakarta Utara yang menjadi tempat wisata adalah...", options: ["Danau Sunter / Pluit", "Danau Toba", "Situ Gintung", "Waduk Jatiluhur"], a: "Danau Sunter / Pluit" },
+            { s: 'plbj', q: "14. Upacara adat pernikahan Betawi dikenal dengan istilah...", options: ["Siraman", "Palang Pintu", "Mapag Sri", "Tedak Siten"], a: "Palang Pintu" },
+            { s: 'plbj', q: "15. Maskot fauna resmi DKI Jakarta adalah...", options: ["Elang Bondol", "Garuda", "Macan Tutul", "Burung Cendrawasih"], a: "Elang Bondol" },
+            { s: 'plbj', q: "16. Monumen Nasional (Monas) terletak di kecamatan...", options: ["Gambir", "Menteng", "Tanah Abang", "Senen"], a: "Gambir" },
+            { s: 'plbj', q: "17. Kawasan pecinan di Jakarta disebut...", options: ["Glodok", "Kampung Melayu", "Tanah Abang", "Pasar Baru"], a: "Glodok" },
+            { s: 'plbj', q: "18. Band Soimah adalah grup musik yang memainkan lagu-lagu...", options: ["Pop Modern", "Gambang Kromong", "Rock", "Jazz"], a: "Gambang Kromong" },
+            { s: 'plbj', q: "19. Warna bendera DKI Jakarta adalah...", options: ["Merah Putih", "Hitam Putih", "Biru Putih", "Hijau Kuning"], a: "Merah Putih" }, // Secara teknis lambang daerah, tapi bendera umum merah putih
+            { s: 'plbj', q: "20. Tempat pemakaman pahlawan di Jakarta Selatan adalah...", options: ["TMP Kalibata", "TPU Tanah Kusir", "Pemakaman Karet", "Pemakaman Manggar"], a: "TMP Kalibata" },
+            { s: 'plbj', q: "21. Jembatan ikonik peninggalan Belanda di Kepulauan Seribu adalah...", options: ["Jembatan Suramadu", "Jembatan Pulau Onrust", "Jembatan Ampera", "Jembatan Merah"], a: "Jembatan Pulau Onrust" },
+            { s: 'plbj', q: "22. Buah khas Jakarta yang sering dijadikan rujak adalah...", options: ["Mangga Arumanis", "Salak Pondoh", "Jeruk Bali", "Apel Malang"], a: "Mangga Arumanis" },
+            { s: 'plbj', q: "23. Gubernur DKI Jakarta yang pertama adalah...", options: ["Ali Sadikin", "Suwirjo", "Soekarno", "Fadjar Panjaitan"], a: "Suwirjo" },
+            { s: 'plbj', q: "24. Ciri khas masyarakat Betawi adalah...", options: ["Tertutup", "Ramah dan Agamis", "Individualis", "Pemalu"], a: "Ramah dan Agamis" },
+            { s: 'plbj', q: "25. Bandara internasional yang melayani Jakarta adalah...", options: ["Soekarno-Hatta", "Juanda", "Husein Sastranegara", "Ngurah Rai"], a: "Soekarno-Hatta" },
 
-            // URAIAN / ESSAY (5 Soal)
-            { type: 'essay', subject: 'pjok', q: "26. (PJOK) Jelaskan secara singkat cara melakukan gerakan guling depan (forward roll)!" },
-            { type: 'essay', subject: 'pjok', q: "27. (PJOK) Mengapa kita wajib melakukan pendinginan setelah berolahraga? Jelaskan manfaatnya." },
-            { type: 'essay', subject: 'agama', q: "28. (Agama) Sebutkan 3 dari 5 Rukun Islam yang kamu ketahui!" },
-            { type: 'essay', subject: 'agama', q: "29. (Agama) Apa yang dimaksud dengan toleransi dalam kehidupan beragama? Berikan satu contoh." },
-            { type: 'essay', subject: 'agama', q: "30. (Agama) Mengapa kita harus bersyukur kepada Tuhan Yang Maha Esa? Jelaskan pendapatmu." }
+            // --- 10 SOAL INDONESIA ---
+            { s: 'indo', q: "26. Tanggal berapakah Indonesia memproklamasikan kemerdekaannya?", options: ["17 Agustus 1945", "18 Agustus 1945", "20 Mei 1908", "28 Oktober 1928"], a: "17 Agustus 1945" },
+            { s: 'indo', q: "27. Siapakah presiden pertama Republik Indonesia?", options: ["Soeharto", "B.J. Habibie", "Ir. Soekarno", "Joko Widodo"], a: "Ir. Soekarno" },
+            { s: 'indo', q: "28. Apa bunyi sila pertama Pancasila?", options: ["Kemanusiaan yang adil...", "Persatuan Indonesia", "Ketuhanan Yang Maha Esa", "Keadilan sosial..."], a: "Ketuhanan Yang Maha Esa" },
+            { s: 'indo', q: "29. Rumah adat Sumatera Barat adalah...", options: ["Rumah Gadang", "Rumah Honai", "Rumah Tongkonan", "Rumah Limas"], a: "Rumah Gadang" },
+            { s: 'indo', q: "30. Pulau terbesar di Indonesia adalah...", options: ["Jawa", "Sumatera", "Kalimantan", "Papua"], a: "Papua" },
+            { s: 'indo', q: "31. Lagu kebangsaan Indonesia berjudul...", options: ["Padamu Negeri", "Indonesia Raya", "Halo-Halo Bandung", "Syukur"], a: "Indonesia Raya" },
+            { s: 'indo', q: "32. Semboyan negara Indonesia adalah...", options: ["Tut Wuri Handayani", "Bhinneka Tunggal Ika", "Ing Ngarsa Sung Tulada", "Gotong Royong"], a: "Bhinneka Tunggal Ika" },
+            { s: 'indo', q: "33. Provinsi paling timur di Indonesia adalah...", options: ["Aceh", "Bali", "Papua", "Maluku"], a: "Papua" },
+            { s: 'indo', q: "34. Candi Borobudur merupakan peninggalan agama...", options: ["Hindu", "Buddha", "Islam", "Kristen"], a: "Buddha" },
+            { s: 'indo', q: "35. Mata uang negara Indonesia adalah...", options: ["Ringgit", "Dollar", "Rupiah", "Yen"], a: "Rupiah" }
         ];
 
         let studentName = "";
-        let essayAnswers = [];
 
         // --- LOGIKA LOGIN ---
         function checkLogin() {
@@ -361,8 +353,8 @@
                 return;
             }
 
-            // Validasi Kode Akses (DIUBAH MENJADI: BELAJAR.ID)
-            if (codeInput === "BELAJAR.ID") {
+            // Validasi Kode Akses
+            if (codeInput === ACCESS_CODE) {
                 studentName = nameInput;
                 document.getElementById('displayStudentName').innerText = "Siswa: " + studentName;
                 
@@ -373,11 +365,10 @@
                 loadQuestions();
             } else {
                 errorMsg.style.display = 'block';
-                // Animasi getar
+                // Animasi getar pada container
                 const container = document.querySelector('.container');
-                container.style.animation = 'none';
-                container.offsetHeight; /* trigger reflow */
                 container.style.animation = 'shake 0.5s';
+                setTimeout(() => container.style.animation = '', 500);
             }
         }
 
@@ -398,43 +389,40 @@
         function loadQuestions() {
             const container = document.getElementById('questions-container');
             container.innerHTML = "";
+            
+            let currentSubject = "";
 
-            questionBank.forEach((item, index) => {
-                // Badge Logic
-                let badgeClass = item.subject === 'pjok' ? 'badge-pjok' : 'badge-agama';
-                let badgeText = item.subject === 'pjok' ? 'PJOK' : 'AGAMA';
-                if(item.type === 'essay') {
-                    badgeClass = 'badge-essay';
-                    badgeText = 'URAIAN';
+            questions.forEach((item, index) => {
+                // Cek ganti subjek untuk header
+                let headerHtml = "";
+                if (item.s !== currentSubject) {
+                    currentSubject = item.s;
+                    const title = currentSubject === 'plbj' ? "BAGIAN 1: PLBJ (Pendidikan Lingkungan Budaya Jakarta)" : "BAGIAN 2: PENGETAHUAN INDONESIA";
+                    headerHtml = `<div class="section-header">${title}</div>`;
                 }
 
-                let html = `
+                // Badge Logic
+                let badgeClass = item.s === 'plbj' ? 'badge-plbj' : 'badge-indo';
+                let badgeText = item.s === 'plbj' ? 'PLBJ' : 'INDO';
+
+                let html = headerHtml + `
                 <div class="question-card">
                     <p class="question-text"><span class="badge ${badgeClass}">${badgeText}</span> ${item.q}</p>
+                    <div class="options">
                 `;
                 
-                if (item.type === 'pg') {
-                    html += `<div class="options">`;
-                    // Kita acak opsi jawaban untuk PG agar lebih adil
-                    let shuffledOptions = [...item.options].sort(() => Math.random() - 0.5);
-                    
-                    shuffledOptions.forEach(opt => {
-                        html += `
-                            <label>
-                                <input type="radio" name="q${index}" value="${opt}"> ${opt}
-                            </label>
-                        `;
-                    });
-                    html += `</div>`;
-                } else {
+                // Acak opsi jawaban
+                let shuffledOptions = [...item.options].sort(() => Math.random() - 0.5);
+                
+                shuffledOptions.forEach(opt => {
                     html += `
-                        <div style="margin-top:15px;">
-                            <textarea id="essay-${index}" placeholder="Ketik jawaban uraian Anda di sini..."></textarea>
-                        </div>
+                        <label>
+                            <input type="radio" name="q${index}" value="${opt}"> ${opt}
+                        </label>
                     `;
-                }
+                });
 
-                html += `</div>`;
+                html += `</div></div>`;
                 container.innerHTML += html;
             });
         }
@@ -442,37 +430,29 @@
         // --- SELESAI & KIRIM NILAI ---
         function finishQuiz() {
             let score = 0;
-            let totalPG = 0;
+            let totalQuestions = questions.length;
             let answeredCount = 0;
-            essayAnswers = []; // Reset
 
-            // Hitung Skor PG & Simpan Essay
-            questionBank.forEach((item, index) => {
-                if (item.type === 'pg') {
-                    totalPG++;
-                    const selected = document.querySelector(`input[name="q${index}\"]:checked`);
-                    if (selected) {
-                        answeredCount++;
-                        if (selected.value === item.a) {
-                            score++;
-                        }
+            // Hitung Skor
+            questions.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}\"]:checked`);
+                if (selected) {
+                    answeredCount++;
+                    if (selected.value === item.a) {
+                        score++;
                     }
-                } else {
-                    // Simpan jawaban essay
-                    const val = document.getElementById(`essay-${index}`).value;
-                    essayAnswers.push({ no: index + 1, q: item.q, a: val });
                 }
             });
 
-            // Konfirmasi jika ada PG kosong
-            if (answeredCount < totalPG) {
-                if(!confirm(`Anda baru menjawab ${answeredCount} dari ${totalPG} soal PG. Yakin ingin mengumpulkan?`)) {
+            // Konfirmasi jika ada soal kosong
+            if (answeredCount < totalQuestions) {
+                if(!confirm(`Anda baru menjawab ${answeredCount} dari ${totalQuestions} soal. Yakin ingin mengumpulkan?`)) {
                     return;
                 }
             }
 
-            // Hitung Nilai Akhir (Skala 100 berdasarkan PG)
-            let finalScore = Math.round((score / totalPG) * 100);
+            // Hitung Nilai Akhir (Skala 100)
+            let finalScore = Math.round((score / totalQuestions) * 100);
 
             // Tampilkan Halaman Hasil
             document.getElementById('quiz-section').style.display = 'none';
@@ -484,26 +464,16 @@
             const dateString = now.toLocaleDateString('id-ID');
             const timeString = now.toLocaleTimeString('id-ID');
 
-            // Format Pesan Uraian
-            let essayText = "";
-            essayAnswers.forEach(e => {
-                let ans = e.a === "" ? "(Tidak dijawab)" : e.a;
-                essayText += `%0A*No ${e.no}:*%0A${ans}%0A`;
-            });
-
             // Pesan Utama
             const messageText = `
 *LAPORAN HASIL UJIAN ONLINE*
 ---------------------------
 👤 *Nama Siswa:* ${studentName}
-📚 *Mapel:* PJOK & Agama
+📚 *Mapel:* PLBJ & Indonesia
 📅 *Tanggal:* ${dateString}
 ⏰ *Waktu:* ${timeString}
 ---------------------------
-💯 *NILAI PG: ${finalScore}*
----------------------------
-*JAWABAN URAIAN (Untuk diperiksa):*
-${essayText}
+💯 *NILAI AKHIR: ${finalScore}*
 ---------------------------
 _Mohon dicatat Pak/Bu. Terima kasih._
             `.trim();
@@ -512,7 +482,7 @@ _Mohon dicatat Pak/Bu. Terima kasih._
             const encodedMessage = encodeURIComponent(messageText);
             
             // Set link tombol WA
-            const waUrl = `https://wa.me/${teacherNumber}?text=${encodedMessage}`;
+            const waUrl = `https://wa.me/${TEACHER_NUMBER}?text=${encodedMessage}`;
             document.getElementById('waLink').href = waUrl;
         }
     </script>
